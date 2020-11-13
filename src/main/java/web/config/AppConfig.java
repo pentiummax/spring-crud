@@ -2,11 +2,9 @@ package web.config;
 
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -24,11 +22,14 @@ import java.util.Properties;
 @ComponentScan(value = "web")
 public class AppConfig {
 
-    @Autowired
-    private Environment env;
+    private final Environment env;
+
+    public AppConfig(Environment env) {
+        this.env = env;
+    }
 
     @Bean
-    public DataSource getDataSource() {
+    public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(env.getProperty("db.driver"));
         dataSource.setUrl(env.getProperty("db.url"));
@@ -37,22 +38,22 @@ public class AppConfig {
         return dataSource;
     }
 
-    @Bean
-    public LocalContainerEntityManagerFactoryBean getEntityManagerFactory() {
+    @Bean(name = "entityManagerFactory")
+    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
         LocalContainerEntityManagerFactoryBean em
                 = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(getDataSource());
+        em.setDataSource(dataSource());
         em.setPackagesToScan("web");
-        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        em.setJpaVendorAdapter(vendorAdapter);
-        em.setJpaProperties(getAdditionalProperties());
+        em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        em.setJpaProperties(additionalProperties());
         return em;
     }
 
-    @Bean
+    @Bean(name = "transactionManager")
     public PlatformTransactionManager transactionManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(getEntityManagerFactory().getObject());
+        transactionManager.setEntityManagerFactory(entityManagerFactoryBean().getObject());
+        transactionManager.setDataSource(dataSource());
         return transactionManager;
     }
 
@@ -61,7 +62,7 @@ public class AppConfig {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 
-    private Properties getAdditionalProperties() {
+    private Properties additionalProperties() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
         properties.setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
