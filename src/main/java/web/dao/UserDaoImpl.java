@@ -76,6 +76,17 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public User getUserByName(String name) {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        User user = em.find(User.class, name);
+        if (user == null) {
+            throw new EntityNotFoundException("Can't find User for name "
+                    + name);
+        }
+        return user;
+    }
+
+    @Override
     public List<User> getUsersList() {
         EntityManager em = entityManagerFactory.createEntityManager();
         Query query = em.createQuery("SELECT u FROM User u", User.class);
