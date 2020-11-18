@@ -1,12 +1,12 @@
 package web.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import web.model.Role;
 import web.model.User;
-
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -43,5 +43,18 @@ public class UserDaoImpl implements UserDao {
     public List<User> getUsersList() {
         Query query = em.createQuery("SELECT u FROM User u", User.class);
         return (List<User>) query.getResultList();
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        Query query = em.createQuery("SELECT u FROM User u where u.username = :username", User.class);
+        query.setParameter("username", username);
+        return (User) query.getSingleResult();
+    }
+
+    @Override
+    public Set<Role> getRoles() {
+        Query query = em.createQuery("SELECT r FROM Role r", Role.class);
+        return new HashSet<Role>(query.getResultList());
     }
 }

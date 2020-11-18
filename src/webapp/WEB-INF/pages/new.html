@@ -5,8 +5,9 @@
     <title>New User</title>
 </head>
 <body>
+<div th:replace="fragments :: logout_button"></div>
 <h1>New User</h1>
-<form th:method="POST" th:action="@{/users}"
+<form th:method="POST" th:action="@{/admin/users}"
       th:object="${user}">
     <table>
         <tr>
@@ -23,6 +24,47 @@
             <td><label for="email">Email</label></td>
             <td>:</td>
             <td><input type="text" th:field="*{email}" id="email"/></td>
+        </tr>
+        <tr>
+            <td><label for="username">Username</label></td>
+            <td>:</td>
+            <td><input type="text" th:field="*{username}" id="username"/></td>
+        </tr>
+        <tr>
+            <td><label for="password">Password</label></td>
+            <td>:</td>
+            <td><input type="text" th:field="*{password}" id="password"/></td>
+        </tr>
+        <tr>
+            <td><label for="account_non_expired">Is account non expired</label></td>
+            <td>:</td>
+            <td><input type="checkbox" th:field="*{accountNonExpired}" id="account_non_expired"/></td>
+        </tr>
+        <tr>
+            <td><label for="account_non_locked">Is account non locked</label></td>
+            <td>:</td>
+            <td><input type="checkbox" th:field="*{accountNonLocked}" id="account_non_locked"/></td>
+        </tr>
+        <tr>
+            <td><label for="credentials_non_expired">Is credentials non expired</label></td>
+            <td>:</td>
+            <td><input type="checkbox" th:field="*{credentialsNonExpired}" id="credentials_non_expired"/></td>
+        </tr>
+        <tr>
+            <td><label for="enabled">Is enabled</label></td>
+            <td>:</td>
+            <td><input type="checkbox" th:field="*{enabled}" id="enabled"/></td>
+        </tr>
+        <tr>
+            <td><label for="editRoles">ROLES</label></td>
+            <td>:</td>
+            <td>
+                <select th:field="*{roles}" id = "editRoles" name="roles" multiple size="2">
+                    <option th:each="role : ${all_roles}"
+                            th:value="${role}"
+                            th:text="${role.role}"></option>
+                </select>
+            </td>
         </tr>
     </table>
     <input type="submit" value="Create!"/>

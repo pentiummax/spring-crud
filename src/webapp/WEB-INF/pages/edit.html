@@ -5,9 +5,10 @@
     <title>Edit a User</title>
 </head>
 <body>
+<div th:replace="fragments :: logout_button"></div>
 <h1>Edit a User</h1>
 <br/><br/>
-<form th:method="PATCH" th:action="@{/users/{id}(id=${user.id})}"
+<form th:method="PATCH" th:action="@{/admin/users/{id}(id=${user.id})}"
       th:object="${user}" >
     <table>
         <tr th:if="${user.id}">

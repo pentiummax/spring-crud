@@ -5,10 +5,11 @@
     <title>Users List</title>
 </head>
 <body>
+<div th:replace="fragments :: logout_button"></div>
 <h1>Users List</h1>
 
 <div>
-    <a th:href="@{/users/new}">Add User</a>
+    <a th:href="@{/admin/users/new}">Add User</a>
 </div>
 <br/><br/>
 <div>
@@ -26,8 +27,8 @@
             <td th:utext="${user.firstName}">...</td>
             <td th:utext="${user.lastName}">...</td>
             <td th:utext="${user.email}">...</td>
-            <td><a th:href="@{/users/{id}/edit(id=${user.id})}">Edit</a></td>
-            <td><form th:method="DELETE" th:action="@{/users/{id}(id=${user.id})}">
+            <td><a th:href="@{/admin/users/{id}/edit(id=${user.id})}">Edit</a></td>
+            <td><form th:method="DELETE" th:action="@{/admin/users/{id}(id=${user.id})}">
                 <input type="submit" value="Delete"/>
             </form></td>
         </tr>
