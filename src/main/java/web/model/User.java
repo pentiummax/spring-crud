@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users_test")
 // Для того, чтобы в дальнейшим использовать класс User в Spring Security, он должен реализовывать интерфейс UserDetails.
 // UserDetails можно представить, как адаптер между БД пользователей и тем что требуется Spring Security внутри SecurityContextHolder
 public class User implements UserDetails {
@@ -39,9 +39,11 @@ public class User implements UserDetails {
 
     private boolean isEnabled;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "users_id"),
-    inverseJoinColumns = @JoinColumn(name = "roles_id"))
+    @ElementCollection(targetClass = Role.class,
+    fetch = FetchType.EAGER)
+    @CollectionTable(name="ROLES")
+    @Column(name = "ROLE_NAME")
+    @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
     public User() {}

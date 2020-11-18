@@ -62,7 +62,7 @@
                 <select th:field="*{roles}" id = "editRoles" name="roles" multiple size="2">
                     <option th:each="role : ${all_roles}"
                             th:value="${role}"
-                            th:text="${role.role}"></option>
+                            th:text="${role.name()}"></option>
                 </select>
             </td>
         </tr>

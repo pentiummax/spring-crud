@@ -1,6 +1,5 @@
 package web.controller;
 
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,8 +9,6 @@ import web.model.User;
 import web.service.UserService;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.HashSet;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
@@ -44,14 +41,12 @@ public class AdminController {
 
     @GetMapping(value = "/users/new")
     public String newUser(@ModelAttribute("user") User user, Model model) {
-        model.addAttribute("all_roles", userService.getRoles());
+        model.addAttribute("all_roles", Role.values());
         return "new";
     }
 
     @PostMapping("/users")
     public String create(@ModelAttribute("user") User user) {
-        Set<Role> allRoles = user.getRoles();
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.saveUser(user);
         return "redirect:/admin/users";
