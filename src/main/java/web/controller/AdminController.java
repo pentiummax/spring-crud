@@ -60,14 +60,20 @@ public class AdminController {
         } catch (EntityNotFoundException e) {
             model.addAttribute("errorMessage", "User not found");
         }
+        user.setPassword("");
         model.addAttribute("user", user);
+        model.addAttribute("all_roles", Role.values());
         return "edit";
     }
 
     @PatchMapping(value = {"/users/{id}"})
     public String updateUser(@PathVariable long id,
                              @ModelAttribute("user") User user) {
-        user.setId(id);
+        if (user.getPassword().matches("^\\s*$")) {
+            user.setPassword(userService.getUser(id).getPassword());
+        } else {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         userService.updateUser(user);
         return "redirect:/admin/users";
     }

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>Users List</title>
 </head>
 <body>
@@ -16,21 +16,31 @@
     <table border="1">
         <tr>
             <th>Id</th>
+            <th>Username</th>
             <th>First name</th>
             <th>Last name</th>
             <th>Email</th>
+            <th>Roles</th>
+            <th>Enabled</th>
             <th>Edit</th>
             <th>Delete</th>
         </tr>
-        <tr th:each ="user : ${users}">
+        <tr th:each="user : ${users}">
             <td th:utext="${user.id}">...</td>
+            <td th:utext="${user.username}">...</td>
             <td th:utext="${user.firstName}">...</td>
             <td th:utext="${user.lastName}">...</td>
             <td th:utext="${user.email}">...</td>
+            <td>
+                <label th:each="role : ${user.roles}" th:text="${role.name()} + ' '">...</label>
+            </td>
+            <td th:utext="${user.enabled}">...</td>
             <td><a th:href="@{/admin/users/{id}/edit(id=${user.id})}">Edit</a></td>
-            <td><form th:method="DELETE" th:action="@{/admin/users/{id}(id=${user.id})}">
-                <input type="submit" value="Delete"/>
-            </form></td>
+            <td>
+                <form th:method="DELETE" th:action="@{/admin/users/{id}(id=${user.id})}">
+                    <input type="submit" value="Delete"/>
+                </form>
+            </td>
         </tr>
     </table>
 </div>

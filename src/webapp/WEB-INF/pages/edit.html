@@ -17,19 +17,60 @@
             <td th:utext="${user.id}">...</td>
         </tr>
         <tr>
-            <td>First name</td>
+            <td><label for="firstName">First name</label></td>
             <td>:</td>
-            <td><input type="text" th:field="*{firstName}" /></td>
+            <td><input type="text" th:field="*{firstName}" id="firstName" /></td>
         </tr>
         <tr>
-            <td>Last name</td>
+            <td><label for="lastName">Second name</label></td>
             <td>:</td>
-            <td><input type="text" th:field="*{lastName}" /></td>
+            <td><input type="text" th:field="*{lastName}" id="lastName"/></td>
         </tr>
         <tr>
-            <td>Email</td>
+            <td><label for="email">Email</label></td>
             <td>:</td>
-            <td><input type="text" th:field="*{email}" /></td>
+            <td><input type="text" th:field="*{email}" id="email"/></td>
+        </tr>
+        <tr>
+            <td><label for="username">Username</label></td>
+            <td>:</td>
+            <td><input type="text" th:field="*{username}" id="username"/></td>
+        </tr>
+        <tr>
+            <td><label for="password">Password</label></td>
+            <td>:</td>
+            <td><input type="text" th:field="*{password}"  id="password"/></td>
+        </tr>
+        <tr>
+            <td><label for="account_non_expired">Is account non expired</label></td>
+            <td>:</td>
+            <td><input type="checkbox" th:field="*{accountNonExpired}" id="account_non_expired"/></td>
+        </tr>
+        <tr>
+            <td><label for="account_non_locked">Is account non locked</label></td>
+            <td>:</td>
+            <td><input type="checkbox" th:field="*{accountNonLocked}" id="account_non_locked"/></td>
+        </tr>
+        <tr>
+            <td><label for="credentials_non_expired">Is credentials non expired</label></td>
+            <td>:</td>
+            <td><input type="checkbox" th:field="*{credentialsNonExpired}" id="credentials_non_expired"/></td>
+        </tr>
+        <tr>
+            <td><label for="enabled">Is enabled</label></td>
+            <td>:</td>
+            <td><input type="checkbox" th:field="*{enabled}" id="enabled"/></td>
+        </tr>
+        <tr>
+            <td><label for="editRoles">ROLES</label></td>
+            <td>:</td>
+            <td>
+                <select th:field="*{roles}" id = "editRoles" name="roles" multiple size="2">
+                    <option th:each="role : ${all_roles}"
+                            th:value="${role}"
+                            th:text="${role.name()}"></option>
+                </select>
+            </td>
         </tr>
 
     </table>
